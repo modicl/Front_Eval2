@@ -1,15 +1,18 @@
 # Frontend - Aplicación Web con Flask
 
 ## Descripción
+
 Frontend desarrollado en Python con el framework Flask. Proporciona una interfaz web completa para la gestión de usuarios, con comunicación RESTful con el backend API.
 
 ## Versiones y Herramientas Requeridas
 
 ### Lenguaje y Runtime
-- **Python**: Versión 3.8 o superior
+
+- **Python**: Versión 3.8 o superior!
 - **pip**: Versión 21.0 o superior (gestor de paquetes de Python)
 
 ### Dependencias Principales
+
 - **Flask**: ^2.3.3 - Framework web micro para Python
 - **Flask-CORS**: ^4.0.0 - Middleware para habilitar CORS
 - **requests**: ^2.31.0 - Librería para peticiones HTTP
@@ -35,11 +38,13 @@ pip install -r requirements.txt
 ## Configuración
 
 1. Copiar el archivo de variables de entorno:
+
 ```bash
 cp .env.example .env
 ```
 
 2. Editar el archivo `.env` con tu configuración:
+
 ```
 PORT=5000
 DEBUG=False
@@ -79,12 +84,14 @@ frontend/
 ## Funcionalidades
 
 ### Páginas Disponibles
+
 - **Página Principal (`/`)**: Lista todos los usuarios con opciones de CRUD
 - **Crear Usuario (`/crear`)**: Formulario para agregar nuevos usuarios
 - **Editar Usuario (`/editar/<id>`)**: Formulario para modificar usuarios existentes
 - **Eliminar Usuario**: Botón de acción en la lista principal
 
 ### Características Técnicas
+
 - **Responsive Design**: Interfaz adaptable a diferentes dispositivos
 - **Bootstrap 5**: Framework CSS para estilos modernos
 - **Font Awesome**: Iconos profesionales
@@ -108,23 +115,26 @@ response = requests.post(f'{BACKEND_URL}/api/usuarios', json=datos_usuario)
 ## Puertos Requeridos
 
 ### Para funcionamiento en contenedor:
+
 - **Puerto 5000**: Puerto del servidor frontend Flask (HTTP)
 - **Puerto 3000**: Puerto de comunicación con backend API (externo)
 
 ### Explicación de puertos:
+
 - **5000**: Es el puerto donde escucha el servidor Flask para servir la aplicación web
 - **3000**: Es el puerto del backend API al que el frontend se conecta para obtener/enviar datos
 
 ## Variables de Entorno
 
-| Variable | Descripción | Valor por Defecto |
-|----------|-------------|-------------------|
-| `PORT` | Puerto del servidor Flask | 5000 |
-| `DEBUG` | Modo debug (True/False) | False |
-| `BACKEND_URL` | URL del backend API | http://localhost:3000 |
-| `SECRET_KEY` | Clave secreta para sesiones | clave_secreta_por_defecto |
+| Variable      | Descripción                 | Valor por Defecto         |
+| ------------- | --------------------------- | ------------------------- |
+| `PORT`        | Puerto del servidor Flask   | 5000                      |
+| `DEBUG`       | Modo debug (True/False)     | False                     |
+| `BACKEND_URL` | URL del backend API         | http://localhost:3000     |
+| `SECRET_KEY`  | Clave secreta para sesiones | clave_secreta_por_defecto |
 
 ## Notas Importantes
+
 - El backend API debe estar corriendo antes de iniciar el frontend
 - Asegúrate de que las URLs en las variables de entorno sean correctas
 - En producción, establece `DEBUG=False` y usa una `SECRET_KEY` segura
