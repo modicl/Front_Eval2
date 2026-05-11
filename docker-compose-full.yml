@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: mysql:latest
+    container_name: mysql_eval2
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_NAME:-proyecto_db}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./Data_Eval2/01_creacion_base_datos.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-root}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./Back_EVAL2
+      dockerfile: Dockerfile
+    container_name: backend_eval2
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: db
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-root}
+      DB_NAME: ${DB_NAME:-proyecto_db}
+      DB_PORT: 3306
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./Front_Eval2
+      dockerfile: Dockerfile
+    container_name: frontend_eval2
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      BACKEND_URL: http://backend:3000
+      SECRET_KEY: ${SECRET_KEY:-clave_secreta_dev}
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  default:
+    name: eval2_network
