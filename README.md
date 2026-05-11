@@ -149,7 +149,7 @@ El pipeline se define en `.github/workflows/ci-cd.yml` y se ejecuta automáticam
 ### Flujo del pipeline
 
 ```
-push a main / develop
+push a develop
         │
         ▼
 ┌───────────────────┐
