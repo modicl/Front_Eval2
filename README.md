@@ -144,7 +144,7 @@ response = requests.post(f'{BACKEND_URL}/api/usuarios', json=datos_usuario)
 
 ## CI/CD con GitHub Actions
 
-El pipeline se define en `.github/workflows/ci-cd.yml` y se ejecuta automáticamente al hacer push a las ramas `main` o `develop`.
+El pipeline se define en `.github/workflows/ci-cd.yml` y se ejecuta automáticamente al hacer push a la rama `develop`.
 
 ### Flujo del pipeline
 
