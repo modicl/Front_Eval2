@@ -139,3 +139,68 @@ response = requests.post(f'{BACKEND_URL}/api/usuarios', json=datos_usuario)
 - Asegúrate de que las URLs en las variables de entorno sean correctas
 - En producción, establece `DEBUG=False` y usa una `SECRET_KEY` segura
 - La aplicación está diseñada para funcionar con el backend API de este proyecto
+
+---
+
+## CI/CD con GitHub Actions
+
+El pipeline se define en `.github/workflows/ci-cd.yml` y se ejecuta automáticamente al hacer push a las ramas `main` o `develop`.
+
+### Flujo del pipeline
+
+```
+push a main / develop
+        │
+        ▼
+┌───────────────────┐
+│  build-and-push   │  Construye la imagen Docker y la publica en Docker Hub
+│                   │  Tags: :latest  y  :<git-sha>
+└────────┬──────────┘
+         │ (solo si rama = main)
+         ▼
+┌───────────────────┐
+│     deploy        │  SSH a la EC2 → pull → reemplaza contenedor → prune
+└───────────────────┘
+```
+
+### Secrets requeridos en GitHub
+
+Configura los siguientes secrets en **Settings → Secrets and variables → Actions** del repositorio:
+
+| Secret               | Descripción                                               |
+| -------------------- | --------------------------------------------------------- |
+| `DOCKERHUB_USERNAME` | Usuario de Docker Hub                                     |
+| `DOCKERHUB_TOKEN`    | Access Token de Docker Hub (no tu contraseña)             |
+| `EC2_HOST`           | IP pública o DNS de la instancia EC2 del frontend         |
+| `EC2_USER`           | Usuario SSH de la EC2 (ej. `ubuntu`)                      |
+| `EC2_SSH_KEY`        | Clave privada SSH (contenido completo del archivo `.pem`) |
+
+### Archivo de entorno en la EC2
+
+El contenedor lee sus variables desde `/home/<EC2_USER>/.env.frontend`.  
+Crea ese archivo en la instancia antes del primer despliegue:
+
+```bash
+# En la EC2 del frontend
+cat > ~/.env.frontend
+PORT=5000
+DEBUG=False
+BACKEND_URL=http://<IP-PRIVADA-BACKEND>:3000
+SECRET_KEY=<clave-secreta-segura>
+```
+
+```
+
+### Imagen publicada
+
+```
+
+docker.io/<DOCKERHUB_USERNAME>/frontend-eval2:latest
+docker.io/<DOCKERHUB_USERNAME>/frontend-eval2:<git-sha>
+
+```
+
+### Ejecución manual
+
+El workflow puede dispararse manualmente desde **Actions → CI/CD Frontend Flask → Run workflow**.
+```
