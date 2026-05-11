@@ -156,7 +156,7 @@ push a main / develop
 │  build-and-push   │  Construye la imagen Docker y la publica en Docker Hub
 │                   │  Tags: :latest  y  :<git-sha>
 └────────┬──────────┘
-         │ (solo si rama = main)
+         │ (solo si rama = develop)
          ▼
 ┌───────────────────┐
 │     deploy        │  SSH a la EC2 → pull → reemplaza contenedor → prune
