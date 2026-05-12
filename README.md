@@ -144,19 +144,19 @@ response = requests.post(f'{BACKEND_URL}/api/usuarios', json=datos_usuario)
 
 ## CI/CD con GitHub Actions
 
-El pipeline se define en `.github/workflows/ci-cd.yml` y se ejecuta automáticamente al hacer push a las ramas `main` o `develop`.
+El pipeline se define en `.github/workflows/ci-cd.yml` y se ejecuta automáticamente al hacer push a la rama `develop`.
 
 ### Flujo del pipeline
 
 ```
-push a main / develop
+push a develop
         │
         ▼
 ┌───────────────────┐
 │  build-and-push   │  Construye la imagen Docker y la publica en Docker Hub
 │                   │  Tags: :latest  y  :<git-sha>
 └────────┬──────────┘
-         │ (solo si rama = main)
+         │ (solo si rama = develop)
          ▼
 ┌───────────────────┐
 │     deploy        │  SSH a la EC2 → pull → reemplaza contenedor → prune
